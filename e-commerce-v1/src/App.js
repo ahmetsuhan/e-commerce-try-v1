@@ -1,4 +1,4 @@
-import {Route,Switch} from 'react-router-dom';
+import {Route,Switch,Redirect} from 'react-router-dom';
 import './App.css';
 import HomePage from './pages/HomePage/index'
 import ShopPage from './pages/ShopPage/index.js';
@@ -45,7 +45,10 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={HomePage}/> 
           <Route exact path="/shop" component={ShopPage}/> 
-          <Route path="/sign-in" exact component={SignInSignUpPage}/>
+          <Route path="/sign-in" exact 
+                  render={() => this.props.currentUser? 
+                  (<Redirect to="/"/>) : 
+                  (<SignInSignUpPage />) }/>
         </Switch>
       </div>
     );
@@ -53,10 +56,14 @@ class App extends React.Component {
  
 }
 
-
+const mapStateToProps = ({user}) => {
+  return{
+    setCurrentUser:user.currentUser
+  }
+}
 const mapDispatchToProps = (dispatch) => {
   return {
     setCurrentUser: (user) => dispatch(setCurrentUser(user))
   }
 }
-export default connect(null,mapDispatchToProps)(App);
+export default connect(mapStateToProps,mapDispatchToProps)(App);
