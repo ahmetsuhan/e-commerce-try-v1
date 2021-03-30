@@ -1,5 +1,5 @@
 import React from 'react'
-import './checkOutPage.scss';
+
 import {connect} from 'react-redux';
 import {createStructuredSelector} from 'reselect';
 
@@ -9,26 +9,36 @@ import CheckOutItem from '../../components/CheckOutItem/index';
 
 import StripeCheckoutButton from '../../components/StripeCheckoutButton'
 
+import {
+    CheckOutPageContainer,
+    CheckOutHeaderContainer,
+    HeaderBlockContainer,
+    TotalContainer,
+    WarningContainer
+        
+} from './checkOutPage.styles';
+
+
 const CheckOutPage = ({cartItems,total}) => {
     return (
-        <div className="check-out-page">
-            <div className="check-out-header">
-                <div className="header-block">
+        <CheckOutPageContainer >
+            <CheckOutHeaderContainer>
+                <HeaderBlockContainer >
                     <span>Product</span>
-                </div>
-                <div className="header-block">
+                </HeaderBlockContainer>
+                <HeaderBlockContainer >
                     <span>Description</span>
-                </div>
-                <div className="header-block">
+                </HeaderBlockContainer>
+                <HeaderBlockContainer >
                     <span>Quantity</span>
-                </div>
-                <div className="header-block">
+                </HeaderBlockContainer>
+                <HeaderBlockContainer>
                     <span>Price</span>
-                </div>
-                <div className="header-block">
+                </HeaderBlockContainer>
+                <HeaderBlockContainer >
                     <span>Remove</span>
-                </div>
-            </div>
+                </HeaderBlockContainer>
+            </CheckOutHeaderContainer>
             {
                 cartItems.map( (cartItem) => {
                     return (
@@ -36,19 +46,19 @@ const CheckOutPage = ({cartItems,total}) => {
                     )
                 } )
             }
-            <div className="total">
+            <TotalContainer>
                 <span>TOTAL: ${total}</span>
-            </div>
-            <div className="test-warning">
+            </TotalContainer>
+            <WarningContainer >
                 *Please use the following test credit card for payments*
                 <br/>
                 paymentest@gmail.com -
             name: Tester -
             credit number: 4242 4242 4242 4242 - Exp: 10/25 -  CVV:123
-            </div>
+            </WarningContainer>
             <StripeCheckoutButton price={total}/>
            
-        </div>
+        </CheckOutPageContainer>
     )
 }
 

@@ -1,12 +1,13 @@
 import React from 'react'
-import './collectionPreview.scss';
 import CollectionItem from '../CollectionItem/index'
 
-const CollectionPreview = ({title,items}) => {
+import {CollectionPreviewContainer, TitleContainer,PrevievContainer} from './collectionPreview.styles';
+ 
+const CollectionPreview = ({title,items,history,match,routeName}) => {
     return (
-        <div className="collection-preview">
-            <h1 className="title">{title.toUpperCase()}</h1>
-            <div className="preview">
+        <CollectionPreviewContainer >
+            <TitleContainer onClick={() => history.push(`${match.path}/${routeName}`)} >{title.toUpperCase()}</TitleContainer>
+            <PrevievContainer>
                 {
                     items.filter((item,index) => index<4)
                     .map((item)=>{
@@ -15,8 +16,8 @@ const CollectionPreview = ({title,items}) => {
                         )
                     })    
                 }
-            </div>
-        </div>
+            </PrevievContainer>
+        </CollectionPreviewContainer>
     )
 }
 

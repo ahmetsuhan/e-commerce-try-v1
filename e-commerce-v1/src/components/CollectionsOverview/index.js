@@ -1,14 +1,16 @@
 import React from 'react';
-import './collectionsOverview.scss';
 
 import {connect} from 'react-redux';
 import {createStructuredSelector} from 'reselect';
 import CollectionPreview from '../CollectionPreview/index';
 import { selectCollectionsForPreview } from '../../redux/Shop/shopSelector';
 
+import {collectionsOverviewDiv} from './collectionOverview.styles';
+
+
 const CollectionsOverview = ({collections}) => {
     return (
-        <div className="collections-overview">
+        <collectionsOverviewDiv>
             {
                     collections.map( ({id,...otherCollectionProps}) =>{
                         return(
@@ -16,7 +18,7 @@ const CollectionsOverview = ({collections}) => {
                         )
                     } )
                 }
-        </div>
+        </collectionsOverviewDiv>
     )
 }
 
