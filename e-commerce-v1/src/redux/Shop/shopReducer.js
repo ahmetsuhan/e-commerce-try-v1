@@ -1,7 +1,6 @@
-import ShopData from './shopData';
 import ShopActionTypes from './shopTypes'
 const initialState = {
-    collections:ShopData
+    collections:null
 };
 
 
