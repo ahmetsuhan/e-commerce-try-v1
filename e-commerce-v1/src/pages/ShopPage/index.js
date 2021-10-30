@@ -3,35 +3,22 @@ import { Route } from "react-router-dom";
 import CollectionsOverview from "../../components/CollectionsOverview/index";
 import CollectionPage from "../CollectionPage/index";
 import { connect } from "react-redux";
-import {
-  firestore,
-  convertCollectionSnapshotToMap,
-} from "../../firebase/firebaseUtils";
-import { updateCollections } from "../../redux/Shop/shopActions";
+import { createStructuredSelector } from "reselect";
+import { selectIsCollectionFetchin } from "../../redux/Shop/shopSelector";
+
 import WithSpinner from "../../components/WithSpinner/index";
+
+import { fetchCollectionsStartAsync } from "../../redux/Shop/shopActions";
 
 const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 class ShopPage extends React.Component {
-  state = {
-    loading: true,
-  };
-
-  unsubscribeFromSnapshot = null;
-
   componentDidMount() {
-    const { updateCollections } = this.props;
-    const collectionRef = firestore.collection("collections");
-
-    collectionRef.get().then((snapshot) => {
-      const collectionsMap = convertCollectionSnapshotToMap(snapshot);
-      updateCollections(collectionsMap);
-      this.setState({ loading: false });
-    });
+    const { fetchCollections } = this.props;
+    fetchCollections();
   }
   render() {
-    const { match } = this.props;
-    const { loading } = this.state;
+    const { match, isCollectionFetching: loading } = this.props;
     return (
       <div className="shop-page">
         <Route
@@ -51,11 +38,12 @@ class ShopPage extends React.Component {
     );
   }
 }
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateCollections: (collectionsMap) =>
-      dispatch(updateCollections(collectionsMap)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  fetchCollections: () => dispatch(fetchCollectionsStartAsync()),
+});
 
-export default connect(null, mapDispatchToProps)(ShopPage);
+const mapStateToProps = createStructuredSelector({
+  isCollectionFetching: selectIsCollectionFetchin,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
