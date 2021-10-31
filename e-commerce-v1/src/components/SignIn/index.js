@@ -80,7 +80,7 @@ class SignIn extends React.Component {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  googleSignIn: () => dispatch(googleSignInStart),
+  googleSignIn: () => dispatch(googleSignInStart()),
   emailSignIn: (email, password) =>
     dispatch(emailSignInStart({ email, password })),
 });
