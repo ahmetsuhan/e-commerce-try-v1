@@ -1,11 +1,28 @@
 import { createStore, applyMiddleware, compose } from "redux";
+
 import { createLogger } from "redux-logger";
 import thunk from "redux-thunk";
+import createSagaMiddleware from "redux-saga";
+
+import { rootSaga } from "./rootSaga";
+
 import { persistStore } from "redux-persist";
 
 import rootReducer from "./rootReducer";
+
+const useAsyncMiddleware = "saga";
+let sagaMiddleware;
+if (useAsyncMiddleware === "saga") {
+  sagaMiddleware = createSagaMiddleware();
+}
+
 function configureStore(preLoadedState) {
-  const middlewares = [thunk];
+  const middlewares = [];
+  if (useAsyncMiddleware === "thunk") {
+    middlewares.push(thunk);
+  } else if (useAsyncMiddleware === "saga") {
+    middlewares.push(sagaMiddleware);
+  }
 
   const logger = createLogger({
     collapsed: true,
@@ -35,6 +52,8 @@ function configureStore(preLoadedState) {
 }
 
 const store = configureStore({});
+
+sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);
 
