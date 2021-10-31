@@ -9,14 +9,22 @@ import {
 
 import { signInSuccess, signInFailure } from "./userAction";
 
+export function* getSnapShotFromUserAuth(userAuth) {
+  try {
+    const userRef = yield call(createUserProfileDOcument, userAuth);
+
+    const userSnapShot = yield userRef.get();
+    yield put(signInSuccess({ id: userSnapShot.id, ...userSnapShot.data() }));
+  } catch (error) {
+    yield put(signInFailure(error));
+  }
+}
+
 export function* signInWithGoogle() {
   try {
     const { user } = yield auth.signInWithPopup(googleProvider);
 
-    const userRef = yield call(createUserProfileDOcument, user);
-
-    const userSnapShot = yield userRef.get();
-    yield put(signInSuccess({ id: userSnapShot.id, ...userSnapShot.data() }));
+    yield getSnapShotFromUserAuth(user);
   } catch (error) {
     yield put(signInFailure(error));
   }
@@ -29,10 +37,7 @@ export function* onGoogleSignInStart() {
 export function* signInWithEmail({ payload: { email, password } }) {
   try {
     const { user } = yield auth.signInWithEmailAndPassword(email, password);
-    const userRef = yield call(createUserProfileDOcument, user);
-
-    const userSnapShot = yield userRef.get();
-    yield put(signInSuccess({ id: userSnapShot.id, ...userSnapShot.data() }));
+    yield getSnapShotFromUserAuth(user);
   } catch (error) {
     yield put(signInFailure(error));
   }
