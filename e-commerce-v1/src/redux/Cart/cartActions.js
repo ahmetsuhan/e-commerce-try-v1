@@ -1,36 +1,32 @@
-import CartActionTypes from './cartTypes';
-
+import CartActionTypes from "./cartTypes";
 
 export const toggleCartHidden = () => {
-
-    return{
-        type: CartActionTypes.TOGGLE_CART_HIDDEN
-    }
-
-}
+  return {
+    type: CartActionTypes.TOGGLE_CART_HIDDEN,
+  };
+};
 
 export const addItem = (item) => {
-
-    return {
-        type:CartActionTypes.ADD_ITEM,
-        payload:item
-    }
-
-}
+  return {
+    type: CartActionTypes.ADD_ITEM,
+    payload: item,
+  };
+};
 
 export const clearItemFromCart = (item) => {
-
-    return {
-        type:CartActionTypes.CLEAR_ITEM_FROM_CART,
-        payload:item
-    }
-
+  return {
+    type: CartActionTypes.CLEAR_ITEM_FROM_CART,
+    payload: item,
+  };
 };
 
 export const removeItem = (item) => {
-
-    return {
-        type:CartActionTypes.REMOVE_ITEM,
-        payload:item
-    }
+  return {
+    type: CartActionTypes.REMOVE_ITEM,
+    payload: item,
+  };
 };
+
+export const clearCart = () => ({
+  type: CartActionTypes.CLEAR_CART,
+});
