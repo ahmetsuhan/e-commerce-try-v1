@@ -74,6 +74,16 @@ export const convertCollectionSnapshotToMap = (collections) => {
 
 firebase.initializeApp(firebaseConfig);
 
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      unsubscribe();
+
+      resolve(userAuth);
+    }, reject);
+  });
+};
+
 export const auth = firebase.auth();
 
 export const firestore = firebase.firestore();
